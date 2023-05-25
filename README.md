@@ -40,4 +40,4 @@ jupyter notebook demo.ipynb
 Feel free to send any questions to:
 - [Siyuan Yuan](mailto:syyuan@stanford.edu)
 
-Note:The telecommunication cable DAS data used to support the fndings of this study are available from the corresponding author upon request. 
+Note: The telecommunication cable DAS data used to support the fndings of this study are available from the corresponding author upon request. 
