@@ -4,7 +4,7 @@ Virtual shot gathers with one car signal | Virtual shot gathers with 236 car sig
 :-------------------------:|:-------------------------:
 <img src="figures/shot_gather_one.png" width="324">  |  <img src="figures/20221223/vs_time_540m_nCars_236.png" width="324">
 
-Disperson image with one car signal | Disperson image with 222 car signals   
+Disperson image with one car signal | Disperson image with 236 car signals   
 :-------------------------:|:-------------------------:
 <img src="figures/dispersion_one.png" width="324">  |  <img src="figures/20221223/disp_time_540m_nCars_236.png" width="324">
 
