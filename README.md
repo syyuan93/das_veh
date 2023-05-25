@@ -1,4 +1,4 @@
-# Automated and Continuous Near-surface characterization using a DAS-based Vehicle Tracking Method
+# Automated and Continuous Near-surface characterization Using Vehicle-induced DAS signals
 
 Virtual shot gathers with one car signal | Virtual shot gathers with 236 car signals   
 :-------------------------:|:-------------------------:
