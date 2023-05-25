@@ -35,6 +35,9 @@ git clone https://github.com/TODO
 ```
 jupyter notebook demo.ipynb
 ```
+
 ### Contact
 Feel free to send any questions to:
 - [Siyuan Yuan](mailto:syyuan@stanford.edu)
+
+Note:The telecommunication cable DAS data used to support the fndings of this study are available from the corresponding author upon request. 
