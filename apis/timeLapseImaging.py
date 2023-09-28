@@ -114,10 +114,8 @@ class TimeLapseImaging:
 
         veh_base = self.tracking.detect_in_one_section(start_x=self.start_x, nx=15, sigma=0.08, 
                                                        show_plot=show_plot, plt_xlim=plt_xlim)
-        st = time.time()
         self.veh_states = self.tracking.tracking_with_veh_base(start_x=self.start_x, end_x=self.end_x,
                                                                veh_base=veh_base, sigma_a=sigma_a)
-#         print('Time taken for car tracking:', time.time() - st)
 
 
     def visualize_tracking_on_surface_waves(self, ax=None, pclip=98, plt_xlo=0, plt_xlim=800, plt_tlo=0, plt_tlim=78, full_band=False):

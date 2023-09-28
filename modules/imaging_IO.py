@@ -19,7 +19,6 @@ def get_time_from_file_path(file_path, time_format='%Y%m%d_%H%M%S'):
     time_str = file_name.split('.')[0]
     return datetime.strptime(time_str, time_format)
 
-# TODO: able to select time window based on the starttime
 class ImagingIO:
     def __init__(self, directory, root, ch1=400, ch2=540, smoothing=True):
         folder_path = os.path.join(root, directory)

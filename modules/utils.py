@@ -176,22 +176,10 @@ def read_data(data_dir, data_name, bp_params, preprocess=None, **kwargs):
 
 
 def bandpass_data(data, dt, flo, fhi):
-    sampling_rate = int(1 / dt)
-
     fNy = 0.5 / dt
     order = 10
-    # st = time.time()
-    # sos = signal.butter(order, [flo / fNy, fhi / fNy], analog=False, btype='band')
     sos = signal.butter(order, [flo / fNy, fhi / fNy], analog=False, btype='band', output='sos')
     data[:] = signal.sosfiltfilt(sos, data, axis=1)
-    # print(data)
-    # data[:] = signal.sosfilt(sos, data, axis=1)
-    # print('old...',time.time()-st)
-
-    # st = time.time()
-    # for k, ch in enumerate(data):
-    #     data[k] = bandpass(ch, freqmin=flo, freqmax=fhi, df=sampling_rate, corners=4, zerophase=True)
-    # print('new...', time.time()-st)
 
 
 def plot_data(data, x_axis, t_axis, pclip=98, ax=None, figsize=(10, 10), y_lim=None, x_lim=None, fig_name=None, fig_dir="Fig/", fontsize=16, tickfont=12):
@@ -336,8 +324,6 @@ def plot_xcorr(xcorr, t_axis, x_axis=None, ax=None, figsize=(8, 10),
         x_lim = [-120, 120]
     if not ax:
         fig, ax = plt.subplots(figsize=figsize)
-    dt = t_axis[1] - t_axis[-1]
-    nt = t_axis.size
     x_origin_index = np.abs(x_axis).argmin()
     xcorr /= np.amax(xcorr[x_origin_index])
     vmax = plot_kwargs.get("vmax", np.percentile(np.absolute(xcorr), 100)) if vmax_use_max else 1
@@ -349,15 +335,12 @@ def plot_xcorr(xcorr, t_axis, x_axis=None, ax=None, figsize=(8, 10),
         end_x = np.abs(x_axis[-1])
 
     if x_axis is not None:
-        x_origin_idx = np.argmax(x_axis < 0)
         xcorr_to_plot = copy.deepcopy(xcorr)
-        # xcorr_to_plot[x_origin_idx:] = np.flip(xcorr[x_origin_idx:], axis=-1)
     else:
         xcorr_to_plot = xcorr
 
     plt.imshow(xcorr_to_plot.T, aspect="auto", vmax=vmax, vmin=-vmax, cmap=cmap,
                extent=[start_x, end_x, t_axis[-1], t_axis[0]], interpolation='bicubic')
-    # plt.ylim([t_lim, -t_lim])
     plt.xlabel("Distance along the fiber [m]", fontsize=fontsize)
     plt.ylabel("Time lag [s]", fontsize=fontsize)
 
@@ -452,11 +435,8 @@ def map_fv_FD_slant_stack(data, dx, dt, freqs, vels, norm=True):
 
 def map_fv(data, dx, dt, freqs, vels, norm=False):
     nscanv = np.size(vels)
-    nscanf = np.size(freqs)
 
     if norm:
-        # data = normfunc(data)
-        # print('norm for disp...')
         data = data / np.linalg.norm(data, axis=-1, keepdims=True, ord=1)
     fk_res, fft_f, fft_k = fk(data, dx, dt)
 
@@ -476,7 +456,6 @@ def extract_ridge(freq, vel, fv_map, func_vel=None, sigma=25, vel_max = 400):
     # Shape of fv_map: (Nvel, Nfreq)
     vel = vel[::-1]
 
-    # No reference curve
     if func_vel is None:
         max_idx = np.abs(vel_max - vel).argmin()
         vel = vel[max_idx:]
@@ -498,10 +477,8 @@ def extract_ridge(freq, vel, fv_map, func_vel=None, sigma=25, vel_max = 400):
 
 def map_fv_smooth(data, dx, dt, freqs, vels, norm=False):
     nscanv = np.size(vels)
-    nscanf = np.size(freqs)
 
     if norm:
-        # data = normfunc(data)
         data = data / np.linalg.norm(data, axis=-1, keepdims=True, ord=1)
     fk_res, fft_f, fft_k = fk(data, dx, dt)
 
@@ -519,7 +496,6 @@ def plot_fv_map(fv_map, freqs, vels, norm=True, fig_dir="Fig/", fig_name=None, a
 
     norm = True
     if norm:
-        # row_sums = np.sqrt(np.sum(np.square(fv_map), axis=0))
         row_sums = np.amax(fv_map, axis=0)
         fv_map = fv_map / row_sums
     if not ax:
@@ -528,7 +504,6 @@ def plot_fv_map(fv_map, freqs, vels, norm=True, fig_dir="Fig/", fig_name=None, a
     pclip = 98
     vmax = np.percentile(np.abs(fv_map), pclip)
     vmin = np.percentile(np.abs(fv_map), 100-pclip)
-#     print(vmax, vmin)
 
     ax.imshow(fv_map, aspect="auto",
               extent=[freqs[0], freqs[-1], vels[0], vels[-1]],
@@ -555,22 +530,12 @@ def bandpass_data_space(data, x_axis, flo, fhi):
     if flo == -1 and fhi == -1:
         return
     dx = x_axis[1] - x_axis[0]
-    sampling_rate = int(1 / dx)
 
     fNy = 0.5 / dx
     order = 10
-    # sos = signal.butter(order, [flo / fNy, fhi / fNy], analog=False, btype='band', output='sos')
     sos = signal.butter(order, [flo / fNy, fhi / fNy], analog=False, btype='band', output='sos')
     data[:] = signal.sosfiltfilt(sos, data, axis=0)
-    # sos = signal.butter(order, [flo / fNy, fhi / fNy], analog=False, btype='band')
-    # data[:] = signal.filtfilt(*sos, data, axis=0)
-    # data[:] = signal.sosfilt(sos, data, axis=0)
-    # print('new', time.time() - st)
-    #
-    # st = time.time()
-    # for k, t_slice in enumerate(data.T):
-    #     data[:, k] = bandpass(t_slice, freqmin=flo, freqmax=fhi, df=sampling_rate, corners=4, zerophase=True)
-    # print('old', time.time() - st)
+
 
 def upload_to_oas(oas_dir, local_path):
     flag = '-r' if os.path.isdir(local_path) else ''

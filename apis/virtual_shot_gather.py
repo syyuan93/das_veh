@@ -63,17 +63,11 @@ def plot_psd_vs_offset(XCF_out, x_axis, t_axis, ax=None, fhi=20, figsize=(8, 8),
     if not vmin:
         vmin = np.percentile(spec, 100-pclip)
 
-    print(vmax, vmin)
-
     x_max_idx = np.abs(x_max - x_axis).argmin()
     x_min_idx = np.abs(x_min - x_axis).argmin()
     min_idx = min(x_max_idx, x_min_idx)
     max_idx = max(x_max_idx, x_min_idx)
     spec = spec[min_idx: max_idx]
-
-    # X, Y = np.meshgrid(freq[:fhi_idx], x_axis[x_max_idx: x_min_idx])
-    # print(X.shape, Y.shape, spec.shape)
-    # ax.contourf(Y, X, spec)
 
     ax.imshow(spec.T, extent=[x_axis[min_idx], x_axis[max_idx], freq[fhi_idx], freq[0]],
               cmap='jet', aspect='auto', vmax=vmax, vmin=vmin, interpolation='antialiased')
@@ -110,7 +104,6 @@ def plot_spectrum_vs_offset(XCF_out, x_axis, t_axis, ax=None, fhi=20, figsize=(8
 
 def preprocessing_window(window, pivot, delta_t, start_x, end_x, time_window_to_xcorr):
     f = interpolate.interp1d(window.veh_state_x, window.veh_state_t, fill_value='extrapolate')
-    # f = extrap1d(f)
 
     dt = window.t_axis[1] - window.t_axis[0]
     pivot_idx = np.argmax(window.x_axis >= pivot)
@@ -154,7 +147,6 @@ def construct_shot_gather_other_side(window: SurfaceWaveWindow, start_x=530, end
 
     # xcorr with the channels to the left of the pivot
     XCF_out_left = xcorr_two_traces_based_on_traj(data, window.t_axis, pivot_idx, f, start_x_idx, wlen, dt, nsamp, window.x_axis, delta_t=delta_t, reverse=True)
-    # print('other side shape', XCF_out_left.shape, XCF_out_right.shape)
 
     XCF_out = np.concatenate((XCF_out_left, XCF_out_right), axis=0)
 
@@ -252,8 +244,6 @@ class VirtualShotGather:
 
         start_x_idx = np.abs(self.x_axis - start_x).argmin()
         end_x_idx = np.abs(self.x_axis - end_x).argmin()
-        # start_x_idx = np.argmax(self.x_axis <= start_x)
-        # end_x_idx = np.argmax(self.x_axis <= end_x)
         self.disp = Dispersion(self.XCF_out[start_x_idx: end_x_idx + 1], 8.16, self.t_axis[1] - self.t_axis[0],
                           freqs=freqs, vels=vels, norm=norm)
 

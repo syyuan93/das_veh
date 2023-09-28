@@ -44,14 +44,11 @@ def remove_unrealistic_tracking(veh_base, veh_states, adjacency_nan_count_lim=20
         nan_indices = np.where(np.isnan(veh_states[v]))[0]
         diffs = np.diff(nan_indices)
         adjacency_count = np.sum(diffs == 1)
-        # print(f'adjacency_nan_count_lim: {adjacency_nan_count_lim}')
-        # adjacency_count = 0
 
         # remove unrealistic cases
         if len(~np.isnan(tmp)) < 0.3 * len(veh_states[v]) or sum(
                np.convolve(np.diff(tmp), np.ones(20), mode='valid') <= -15) or abs(sum(np.diff(tmp))) < 30 * (
                len(tmp) / len(veh_states[v])) or adjacency_count >= adjacency_nan_count_lim:
-        # if len(~np.isnan(tmp)) < 0.3 * len(veh_states[v]):
 
             invalid_num_tmp.append(v)
 
@@ -75,20 +72,8 @@ def plot_data(data, x_axis, t_axis, pclip=98, ax=None, figsize=(10, 10), y_lim=N
               cmap="gray",
               vmax=vmax,
               vmin=-vmax)
-    # ax.set_xlim([0, 800])
     ax.set_ylim(y_lim)
     ax.set_xlim(x_lim)
 
-# def bandpass_data(data, t_axis, flo, fhi):
-#     dt = t_axis[1] - t_axis[0]
-#     sampling_rate = int(1 / dt)
-#     for k, ch in enumerate(data):
-#         data[k] = bandpass(ch, freqmin=flo, freqmax=fhi, df=sampling_rate, corners=4, zerophase=True)
-
-# def read_and_plot_npz(data_dir, data_name, bp_params=None, **plt_kwargs):
-#     data, x_axis, t_axis = read_data(data_dir, data_name)
-#     if bp_params:
-#         bandpass_data(data, t_axis, **bp_params)
-#     plot_data(data, x_axis, t_axis, **plt_kwargs)
 
 

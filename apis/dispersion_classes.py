@@ -20,7 +20,6 @@ class SurfaceWaveDispersion:
         else:
             self._smart_disp(**method_kwargs)
 
-    # def _naive_disp(self, start_x=80, dist=150):
     def _naive_disp(self, start_x, end_x):
         dist = end_x - start_x
 

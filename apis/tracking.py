@@ -1,3 +1,7 @@
+"""
+Kalman Filter code is based on https://github.com/jingxiaoliu/TelecomTM
+"""
+
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 import numpy as np
@@ -25,7 +29,6 @@ class KF_tracking:
         minprominence = detection_args["minprominence"]
         minseparation = detection_args["minseparation"]
         prominenceWindow = detection_args["prominenceWindow"]
-        height = detection_args.get("height", None)
 
         peak_erode = np.zeros(len(self.t_axis))
 
