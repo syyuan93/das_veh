@@ -10,7 +10,7 @@ Disperson image with one car signal | Disperson image with 236 car signals
 
 This is the repository for the following paper. If you use this implementation, please cite our papers:
 
->* TODO
+>* Yuan, S., Liu, J., Noh, H. Y., Clapp, R., & Biondi, B.(2023). Using Vehicle-induced DAS Signals for Near-surface Characterization with High Spatiotemporal Resolution. JGR: Solid Earth, in preparation.
 
 [[paper]]()
 
