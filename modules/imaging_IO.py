@@ -39,6 +39,8 @@ class ImagingIO:
         scale = 1
         date = file_path.split('/')[-2]
         if date > '20230219':
+            # Adjust the scale if the date indicates a newer data format (after 20230219).
+            # An update in the OptaSense data format post this date resulted in increased amplitude.
             scale = 6463.81735715902
         if self.smoothing:
             data = savgol_filter(data, 21, 15)
