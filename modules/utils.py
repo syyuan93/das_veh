@@ -3,7 +3,6 @@ import copy
 import matplotlib.pyplot as plt
 import numpy as np
 from obspy.signal.filter import bandpass
-import segyio
 from scipy import signal
 import math
 import scipy
@@ -70,7 +69,7 @@ def extrap1d(interpolator):
 
 def _read_das_segy(fname, **kwargs):
     # https://github.com/equinor/segyio-notebooks/blob/master/notebooks/basic/02_segy_quicklook.ipynb
-
+    import segyio
     with segyio.open(fname, ignore_geometry=True) as segy_file:
         nch = segy_file.tracecount
         nt = segy_file.samples.size
